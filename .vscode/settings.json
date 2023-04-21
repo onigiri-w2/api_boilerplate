@@ -1,0 +1,48 @@
+{
+  "editor.fontSize": 16,
+  "editor.wordWrap": "on",
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.formatOnPaste": false,
+  "editor.codeLens": true,
+
+  "autoDocstring.docstringFormat": "google",
+
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
+  "[json]": {
+    "editor.tabSize": 2
+  },
+
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python3",
+
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.linting.flake8Args": [
+    "--max-line-length=120",
+    "--ignore=E203,E503,W504,E741"
+  ],
+  "python.linting.mypyEnabled": true,
+  "python.linting.mypyArgs": [
+    "--disallow-untyped-defs",
+    "--ignore-missing-imports"
+  ],
+  "python.linting.mypyPath": "${workspaceFolder}/.venv/bin/mypy",
+  "python.linting.ignorePatterns": ["tests/**/*.py"],
+  "python.linting.lintOnSave": true,
+
+  "python.formatting.provider": "none",
+  "python.formatting.blackPath": ".venv/bin/black",
+  "python.formatting.blackArgs": ["--line-length=120"],
+
+  "isort.args": ["--profile=black"]
+}

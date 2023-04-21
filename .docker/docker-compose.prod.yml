@@ -1,0 +1,63 @@
+version: "3"
+services:
+  app:
+    container_name: bp_api_app
+    build:
+      context: ../
+      dockerfile: .docker/Dockerfile.app
+    environment:
+      # コンテナ内で利用する環境変数
+      # 注意として、ここに指定してる変数は、Dockerfileには共有されない。
+      ENV: prod
+      PYTHONPATH: ./
+      PYTHONDONTWRITEBYTECODE: 1
+      SQLALCHEMY_ENGINE_URI: mysql+pymysql://${MYSQL_USER}:${MYSQL_PASSWORD}@bp_api_db:3306/${MYSQL_DATABASE}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - backend
+  db:
+    container_name: bp_api_db
+    image: mysql:8.0
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_HOST: "%"
+      TZ: "Asia/Tokyo"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - ./db/conf.d:/etc/mysql/conf.d
+      # TODO: 必要であれば、適切なディレクトリをホスト側に指定した方がいい
+      # 別ボリュームのディレクトリを指定するなど、データの耐久性を考慮する
+      - ./db/data:/var/lib/mysql
+      # TODO: 必要であれば、適切なディレクトリをホスト側に指定した方がいい
+      # 別ボリュームのディレクトリを指定するなど、データの耐久性を考慮する
+      - ./logs/mysql:/var/log/mysql
+    networks:
+      - backend
+  web:
+    container_name: bp_api_web
+    image: nginx
+    depends_on:
+      - app
+    ports:
+      - 80:80
+      #- 443:443
+    restart: always
+    volumes:
+      - ./web/conf.d:/etc/nginx/conf.d
+      # TODO: 必要であれば、適切なディレクトリをホスト側に指定した方がいい
+      # 別ボリュームのディレクトリを指定するなど、データの耐久性を考慮する
+      - ./logs/nginx:/var/log/nginx
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge

@@ -1,0 +1,14 @@
+# 共通
+.venv/
+.devcontainer/db/data/
+.devcontainer/logs/
+.docker/db/data/
+.docker/logs/
+
+# python系
+.mypy_cache
+__pycache__/
+.pytest_cache/
+
+# その他
+*.db

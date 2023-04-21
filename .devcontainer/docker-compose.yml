@@ -1,0 +1,55 @@
+version: "3"
+services:
+  app:
+    container_name: bp_api_app_dev
+    build:
+      context: ../
+      dockerfile: .devcontainer/Dockerfile.app
+    ports:
+      - 18000:8000
+    environment:
+      # コンテナ内で利用する環境変数
+      # 注意として、ここに指定してる変数は、Dockerfileには共有されない。
+      ENV: dev
+      PYTHONPATH: ./
+      PYTHONDONTWRITEBYTECODE: 1
+      SQLALCHEMY_ENGINE_URI: mysql+pymysql://hogehoge:hogehoge@db:3306/hogedb
+    volumes:
+      # もし性能が重い場合は、`cached`オプションをつけてもいいかも。詳しくはggrかchatgptへ。
+      - ../.vscode/:/workspace/.vscode/
+      - ../src/:/workspace/src/
+      - ../.gitignore:/workspace/.gitignore
+      - ../.git/:/workspace/.git/
+      - ../Makefile:/workspace/Makefile
+      - ../poetry.lock:/workspace/poetry.lock
+      - ../pyproject.toml:/workspace/pyproject.toml
+    networks:
+      - backend
+    depends_on:
+      db:
+        condition: service_healthy
+    tty: true
+  db:
+    container_name: bp_api_db_dev
+    image: mysql:8.0
+    environment:
+      MYSQL_USER: hogehoge
+      MYSQL_PASSWORD: hogehoge
+      MYSQL_DATABASE: hogedb
+      MYSQL_ROOT_PASSWORD: root_pass
+      MYSQL_ROOT_HOST: "%"
+      TZ: "Asia/Tokyo"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - ./db/conf.d:/etc/mysql/conf.d
+      - ./db/data:/var/lib/mysql
+      - ./logs/mysql:/var/log/mysql
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge

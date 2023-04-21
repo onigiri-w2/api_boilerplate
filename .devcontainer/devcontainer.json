@@ -1,0 +1,16 @@
+{
+  "name": "bp_api",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "postCreateCommand": "poetry config virtualenvs.in-project true && poetry install && poetry shell",
+  "extensions": [
+    "ms-python.python",
+    "usernamehw.errorlens",
+    "mkxml.vscode-filesize",
+    "shardulm94.trailing-spaces",
+    "njpwerner.autodocstring",
+    "gruntfuggly.todo-tree",
+    "evinrose.vsc-python-indent"
+  ]
+}
