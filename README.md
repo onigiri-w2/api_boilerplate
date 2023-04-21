@@ -9,7 +9,7 @@ python でバックエンド API を作る際のボイラープレート
 3. python のフレームワークに`FastAPI`を使う
 4. DB は MySQL を利用する
 
-# Usage
+# Install
 
 1. リポジトリをクローンする。
 
@@ -36,19 +36,25 @@ git clone https://github.com/onigiri-w2/bp_api
 make initialize_bp
 ```
 
-6. VSCode の python インタープリターに`.venv`にある python バイナリを指定する。
+# Usage
 
-- 注意 1：`.venv` は「5.」のプロセスを実施することで生成されます。
-- 注意 2：ただ、まあ settings.json の`python.defaultInterpreterPath`に指定してるので、特段何もせずともインタープリターに自動設定されるかも。
+## 開発は以下の流れかも
 
-# Features
+1. devcontainer 立ち上げる。
+2. fastapi 起動する。
+3. 必要なコードを追加したり修正したりする。
+4. ある程度動作確認（テスト）する。
+5. local に戻って、docker-compose.dev.yml から Docker 環境立てて、動作確認してみたりする。
+6. 本番環境にこのコード持っていって、docker-compose.prod.yml から環境立てて、動作確認したりする。
 
-## vscode の設定及び拡張
+これ実行したら、`dist/openapi.json`としてファイルが生成される。
 
-vscode で作る前提で開発環境を作ってる。dev-container とかも vscode の機能だし。
-まあ、vscode を使わなくてもボイラープレート自体は使えるが。
+## 内部（src/配下）の開発は、構造読んで雰囲気で
 
-- TODO: README.md の整理
-- TODO: deploy 周りの整理（AWS かなぁ？）
-- TODO: fastapi のテスト
-- TODO: それ以外の utils 系のテスト
+説明するのサボってるだけ。。。
+
+## openapi.json が欲しいなら...
+
+```sh
+poetry run python3 script/generate_openapi.py
+```

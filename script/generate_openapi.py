@@ -7,7 +7,7 @@ from pathlib import Path
 from src.app import app
 from src.settings import ROOT_PATH
 
-OPEN_API_PATH = Path.joinpath(ROOT_PATH, "dist", "openapi.json")
+OPEN_API_PATH = Path.joinpath(ROOT_PATH, ".dist", "openapi.json")
 
 
 def execute() -> None:

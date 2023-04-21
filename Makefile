@@ -4,10 +4,27 @@ initialize_bp:
 
 
 # fastapiの起動
-run:
+## docker環境で起動する時
+f_pr:
 	sh run.sh
 
+## local環境で起動する時
+## devdocker内で起動する時は、FASTAPI_HOST=0.0.0.0と指定するといい。
+## example) make f_lr FASTAPI_HOST=0.0.0.0
+FASTAPI_HOST = localhost
+f_lr:
+	poetry run python3 script/create_db_tables.py && poetry run python3 -m uvicorn src.app:app --host ${FASTAPI_HOST} --reload
 
-# fastapi local dev run
-local_run:
-	poetry run python3 -m uvicorn src.app:app --reload
+
+# dockerの操作
+## 本番
+dp_cr:
+	docker-compose -f .docker/docker-compose.prod.yml up -d --build
+dp_dr:
+	docker-compose -f .docker/docker-compose.prod.yml down --rmi all
+
+## 開発
+dd_cr:
+	docker-compose -f .docker/docker-compose.dev.yml up -d --build
+dd_dr:
+	docker-compose -f .docker/docker-compose.dev.yml down --rmi all

@@ -18,6 +18,7 @@ services:
       # もし性能が重い場合は、`cached`オプションをつけてもいいかも。詳しくはggrかchatgptへ。
       - ../.vscode/:/workspace/.vscode/
       - ../src/:/workspace/src/
+      - ../script/:/workspace/script/
       - ../.gitignore:/workspace/.gitignore
       - ../.git/:/workspace/.git/
       - ../Makefile:/workspace/Makefile

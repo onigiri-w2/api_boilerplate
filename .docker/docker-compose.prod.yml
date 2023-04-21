@@ -12,6 +12,8 @@ services:
       PYTHONPATH: ./
       PYTHONDONTWRITEBYTECODE: 1
       SQLALCHEMY_ENGINE_URI: mysql+pymysql://${MYSQL_USER}:${MYSQL_PASSWORD}@bp_api_db:3306/${MYSQL_DATABASE}
+      # TODO: ここは適宜変更する必要あり。（複数指定の場合はカンマ区切り）
+      CORS_ORIGINS: http://www.example.com,http://www.hogehoge.com:8080
     depends_on:
       db:
         condition: service_healthy

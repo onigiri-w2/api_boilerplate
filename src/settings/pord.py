@@ -7,7 +7,7 @@ import logging
 import os
 
 # CORS設定
-CORS_ORIGINS = os.environ["CORS_ORIGINS"]
+CORS_ORIGINS = [v.strip() for v in os.environ["CORS_ORIGINS"].split(",")]
 
 # SQL Alchemy DB URI
 SQLALCHEMY_ENGINE_URI = os.environ["SQLALCHEMY_ENGINE_URI"]
