@@ -10,6 +10,7 @@
 
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
+  "code-runner.runInTerminal": true,
   "code-runner.executorMap": {
     "python": "poetry run python3"
   },
