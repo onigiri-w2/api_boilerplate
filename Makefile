@@ -13,7 +13,7 @@ f_pr:
 ## example) make f_lr FASTAPI_HOST=0.0.0.0
 FASTAPI_HOST = localhost
 f_lr:
-	poetry run python3 script/create_db_tables.py && poetry run python3 -m uvicorn src.app:app --host ${FASTAPI_HOST} --reload
+	poetry run python3 script/create_rdb_tables.py && poetry run python3 -m uvicorn src.app:app --host ${FASTAPI_HOST} --reload
 
 
 # dockerの操作
