@@ -9,6 +9,8 @@ from src.utils.validation.validator import Evaluator, Validator
 
 @dataclass(frozen=True)
 class ValueObject(metaclass=ABCMeta):
+    # dataclassの属性から除外した変数を定義したいなら、__class_vars__に定義する
+    # 継承するクラスの話ね。
     __class_vars__: ClassVar[dict] = {}
     VALID_SCHEMA: ClassVar[List[Tuple[Evaluator, ErrorInfo]]] = []
 

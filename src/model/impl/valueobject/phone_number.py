@@ -13,6 +13,7 @@ from src.utils.validation.evaluator import Evaluator
 class PhoneNumber(ValueObject):
     phone_number: str
 
+    # REGEXは、ValueObjectの属性から除外したいので、__class_vars__に定義する
     __class_vars__ = {
         "REGEX": re.compile(r"\d{3}-\d{4}-\d{4}"),
     }
