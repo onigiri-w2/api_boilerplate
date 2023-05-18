@@ -18,7 +18,7 @@ app = FastAPI(debug=True)
 add_exception_handlers(app)
 app.router.route_class = LoggingRoute
 
-app.include_router(v1_router, prefix="/v1")
+app.include_router(v1_router, prefix="/api/v1")
 
 app.add_middleware(CustomServerErrorHandler)
 app.add_middleware(
