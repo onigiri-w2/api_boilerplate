@@ -1,15 +1,13 @@
-import secrets
 from abc import ABCMeta, abstractmethod
 from dataclasses import asdict, dataclass
-from typing import Any
+from typing import Any, Generic, TypeVar
 
-from src.model.interface.valueobject import ValueObject
-from src.utils.validation.evaluator import Evaluator
+T = TypeVar("T")
 
 
 @dataclass
-class Entity(metaclass=ABCMeta):
-    id: "Id"
+class Entity(Generic[T], metaclass=ABCMeta):
+    id: T
 
     @classmethod
     @abstractmethod
@@ -31,14 +29,6 @@ class Entity(metaclass=ABCMeta):
         """インスタンスの更新"""
         pass
 
-    @classmethod
-    def _generate_id(cls) -> "Id":
-        return Id.new(secrets.token_hex(8))
-
-    @classmethod
-    def _build_id(cls, id: str) -> "Id":
-        return Id.new(id)
-
     def asdict(self) -> dict:
         return asdict(self)
 
@@ -49,18 +39,3 @@ class Entity(metaclass=ABCMeta):
 
     def __hash__(self) -> int:
         return hash(f"{self.__class__.__name__}:{self.id}")
-
-
-@dataclass(frozen=True)
-class Id(ValueObject):
-    id: str
-    __class_vars__ = {
-        "LENGTH": 16,
-    }
-    VALID_SCHEMA = [
-        (Evaluator(lambda id: len(id) == Id.__class_vars__["LENGTH"]), "IDの長さが不正です。"),
-    ]
-
-    @classmethod
-    def new(cls, id: str) -> "Id":
-        return cls(id=id)

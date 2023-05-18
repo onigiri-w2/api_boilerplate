@@ -1,8 +1,8 @@
-from src.model.interface.repository import Repository
+from src.model.interface.repository import Repository, TEntity
 from src.settings import Session
 
 
-class MySQLRepository(Repository):
+class MySQLRepository(Repository[TEntity]):
     def __init__(self, autocommit: bool = False):
         self._autocommit = autocommit
         self._session = Session()

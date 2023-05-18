@@ -8,7 +8,7 @@ from src.utils.exception.error_info import ErrorInfo, ErrorMessage
 from src.utils.exception.exception import NotFoundError
 
 
-class UserMySQLRepository(MySQLRepository):
+class UserMySQLRepository(MySQLRepository[User]):
     def save(self, entity: User) -> User:
         user_orm: UserORM = UserORM.from_entity(entity)
         self._session.add(user_orm)
