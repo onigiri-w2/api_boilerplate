@@ -7,5 +7,6 @@ class ErrorMessage(Enum):
     E_INVALID_AGE = "不正な年齢です。"
     E_INVALID_PHONE_NUMBER = "不正な電話番号です。"
     E_NOT_FOUND_USER = "ユーザーが見つかりません。"
+    E_INVALID_FROM_ORM = "ORMからEntityへの変換に失敗しました。"
 
     E_AUTH_ERROR = "認証エラーです。"

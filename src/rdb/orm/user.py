@@ -6,6 +6,8 @@ from sqlalchemy import Column, Integer, String
 from src.model.impl.entity.user.user import User as UserEntity
 from src.rdb.interface.orm import OrmBase
 from src.settings import TABLE_NAME_USER
+from src.utils.exception.error_info import ErrorInfo, ErrorMessage
+from src.utils.exception.exception import InvalidFromOrmError
 
 
 class User(OrmBase):
@@ -26,4 +28,6 @@ class User(OrmBase):
         )
 
     def to_entity(self) -> UserEntity:
+        if self.age is None:
+            raise InvalidFromOrmError([ErrorInfo(ErrorMessage.E_INVALID_FROM_ORM)])
         return UserEntity.build(str(self.id), str(self.name), int(self.age), str(self.phone_number))

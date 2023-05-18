@@ -32,3 +32,7 @@ class NotFoundError(RootException):
 
 class AuthenticationError(RootException):
     """認証エラー"""
+
+
+class InvalidFromOrmError(RootException):
+    """ORMからEntityへの変換エラー"""
