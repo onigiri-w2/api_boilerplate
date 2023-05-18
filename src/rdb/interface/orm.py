@@ -20,7 +20,7 @@ class OrmBase(Generic[T], ABC, Base, metaclass=DeclarativeABCMeta):
 
     @classmethod
     @abstractmethod
-    def from_entity(cls, entity: T) -> "OrmBase":
+    def from_entity(cls, entity: T) -> "OrmBase[T]":
         pass
 
     @abstractmethod

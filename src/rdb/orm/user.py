@@ -10,7 +10,7 @@ from src.utils.exception.error_info import ErrorInfo, ErrorMessage
 from src.utils.exception.exception import InvalidFromOrmError
 
 
-class User(OrmBase):
+class User(OrmBase[UserEntity]):
     __tablename__ = TABLE_NAME_USER
 
     id = Column("id", String(16), primary_key=True, index=True)
