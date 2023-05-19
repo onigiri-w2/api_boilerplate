@@ -23,10 +23,8 @@ class UserMySQLRepository(MySQLRepository[User, Char16Id]):
         return entity
 
     def find(self, id: Char16Id) -> User:
-        user_orm: UserORM | None = self._session.query(UserORM).filter(UserORM.id == id.id).first()
-        if user_orm is None:
-            raise NotFoundError([ErrorInfo(ErrorMessage.E_NOT_FOUND_USER)])
-        return user_orm.to_entity()
+        orm = self._find_orm(id.id)
+        return orm.to_entity()
 
     def _find_orm(self, id: str) -> UserORM:
         member_orm: UserORM | None = self._session.query(UserORM).filter(UserORM.id == id).first()
