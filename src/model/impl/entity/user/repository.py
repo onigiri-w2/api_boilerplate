@@ -11,8 +11,6 @@ from src.utils.exception.exception import NotFoundError
 
 class UserMySQLRepository(MySQLRepository[User, Char16Id]):
     def create(self, entity: User) -> User:
-        if self._find_orm(entity.id.id):
-            raise NotFoundError([ErrorInfo(ErrorMessage.E_DUPLICATE_USER)])
         orm = UserORM.from_entity(entity)
         self._save(orm)
         return entity
