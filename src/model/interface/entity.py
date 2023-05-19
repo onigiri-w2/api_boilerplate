@@ -2,12 +2,12 @@ from abc import ABCMeta, abstractmethod
 from dataclasses import asdict, dataclass
 from typing import Any, Generic, TypeVar
 
-T = TypeVar("T")
+TId = TypeVar("TId")
 
 
 @dataclass
-class Entity(Generic[T], metaclass=ABCMeta):
-    id: T
+class Entity(Generic[TId], metaclass=ABCMeta):
+    id: TId
 
     @classmethod
     @abstractmethod

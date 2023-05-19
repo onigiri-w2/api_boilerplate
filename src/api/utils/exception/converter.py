@@ -1,11 +1,11 @@
 from functools import wraps
-from typing import Callable, Type
+from typing import Callable, Tuple, Type
 
 from src.api.utils.exception.exception import HttpException
 from src.utils.exception.exception import RootException
 
 
-def convert_exception(to_: Type[HttpException], from_: tuple[Type[RootException]]) -> Callable:
+def convert_exception(to_: Type[HttpException], from_: Tuple[Type[RootException], ...]) -> Callable:
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         # type: ignore

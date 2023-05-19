@@ -10,6 +10,7 @@ from src.api.v1.schema.request import CreateUserRequest, UpdateUserRequest
 from src.api.v1.schema.response import UserResponse
 from src.model.impl.entity.user.repository import UserMySQLRepository
 from src.model.impl.entity.user.user import User
+from src.model.impl.valueobject.id.char_16_id import Char16Id
 from src.rdb.query.user import UserQuery
 from src.utils.exception.exception import NotFoundError, ValidationError
 
@@ -53,7 +54,7 @@ async def one_user(name: str = "") -> UserResponse:
 async def create_user(user_request: CreateUserRequest) -> UserResponse:
     repo = UserMySQLRepository(autocommit=True)
     user = User.new(user_request.name, user_request.age, user_request.phone_number)
-    repo.save(user)
+    repo.create(user)
     return UserResponse(
         id=user.id.id, name=user.name.name, age=user.age.age, phone_number=user.phone_number.phone_number
     )
@@ -68,7 +69,7 @@ async def create_user(user_request: CreateUserRequest) -> UserResponse:
 @convert_exception(Http404Exception, (NotFoundError,))
 async def update_user(user_request: UpdateUserRequest) -> Response:
     repo = UserMySQLRepository(autocommit=True)
-    user = repo.find(user_request.id)
+    user = repo.find(Char16Id.new(user_request.id))
     user = user.updated(user_request.name, user_request.age, user_request.phone_number)
-    repo.save(user)
+    repo.update(user)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

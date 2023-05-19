@@ -1,18 +1,22 @@
 from abc import ABCMeta, abstractmethod
-from typing import Any, Generic, TypeVar
+from typing import Generic, TypeVar
 
-from src.model.interface.entity import Entity
+from src.model.interface.entity import Entity, TId
 
 TEntity = TypeVar("TEntity", bound="Entity")
 
 
-class Repository(Generic[TEntity], metaclass=ABCMeta):
+class Repository(Generic[TEntity, TId], metaclass=ABCMeta):
     @abstractmethod
-    def save(self, entity: TEntity) -> TEntity:
+    def create(self, entity: TEntity) -> TEntity:
         pass
 
     @abstractmethod
-    def find(self, id: Any) -> TEntity:
+    def update(self, entity: TEntity) -> TEntity:
+        pass
+
+    @abstractmethod
+    def find(self, id: TId) -> TEntity:
         pass
 
     @abstractmethod
