@@ -5,12 +5,17 @@ API独自のエラークラスを定義する
 """
 from fastapi import status
 
+from src.utils.exception.exception import RootException
+
 
 class HttpException(Exception):
     status_code: int
 
-    def __init__(self, code_msgs: list[dict[str, str]] = []) -> None:
+    def __init__(self, code_msgs: list[dict[str, str]] = [], original_error: RootException | None = None) -> None:
         self._code_msgs = code_msgs
+        # 例外の原因となった内部エラーを保持しておく。Noneの場合もあると思う。
+        # 注意: この値はログ出力用なので、エラーレスポンスには含めない
+        self.original_error = original_error
 
     @property
     def dict_errors(self) -> list[dict[str, str]]:

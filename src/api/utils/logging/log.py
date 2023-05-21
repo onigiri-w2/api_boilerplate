@@ -1,6 +1,6 @@
 from fastapi import Request
 
-from src.utils.exception.exception import RootException
+from src.api.utils.exception.exception import HttpException
 
 
 class RequestLog:
@@ -24,7 +24,7 @@ class RequestLog:
 class ErrorLevelLog:
     LEVEL = "error"
 
-    def __init__(self, request_id: str, exception: RootException) -> None:
+    def __init__(self, request_id: str, exception: HttpException) -> None:
         self.request_id = request_id
         self._exception = exception
 
@@ -33,6 +33,7 @@ class ErrorLevelLog:
             "request_id": self.request_id,
             "error": str(self._exception),
             "level": self.LEVEL,
+            "original_error": str(self._exception.original_error),
         }
 
 

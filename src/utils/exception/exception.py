@@ -11,7 +11,7 @@ class RootException(Exception, metaclass=ABCMeta):
         self.error_info_list = error_info_list
 
     def __str__(self) -> str:
-        return "[{}]".format(", ".join([str(e) for e in self.error_info_list]))
+        return "{}[{}]".format(type(self).__name__, ", ".join([str(e) for e in self.error_info_list]))
 
     @property
     def errors(self) -> list[ErrorInfo]:

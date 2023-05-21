@@ -7,8 +7,8 @@ from fastapi import Request, Response
 from fastapi.routing import APIRoute
 
 from src.api.context import request_id_context
+from src.api.utils.exception.exception import HttpException
 from src.api.utils.logging.log import CriticalLevelLog, ErrorLevelLog, RequestLog
-from src.utils.exception.exception import RootException
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -35,7 +35,7 @@ class LoggingRoute(APIRoute):
             except Exception as e:
                 # ログ量が増えないように、エラー時だけリクエストパラメータを記録しておく。
                 logger.info(await RequestLog(request_id_context.get(), request).to_json())
-                if isinstance(e, RootException):
+                if isinstance(e, HttpException):
                     logger.error(ErrorLevelLog(request_id_context.get(), e).to_json())
                 else:
                     logger.critical(CriticalLevelLog(request_id_context.get(), e, traceback.format_exc()).to_json())

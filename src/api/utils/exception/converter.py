@@ -13,7 +13,7 @@ def convert_exception(to_: Type[HttpException], from_: Tuple[Type[RootException]
             try:
                 return await func(*args, **kwargs)
             except from_ as e:
-                raise to_(e.dict_errors)
+                raise to_(e.dict_errors, e)
 
         return wrapper
 
