@@ -28,3 +28,8 @@ dd_cr:
 	docker-compose -f .docker/docker-compose.dev.yml up -d --build
 dd_dr:
 	docker-compose -f .docker/docker-compose.dev.yml down --rmi all
+
+
+## openapiの生成
+openapi:
+	poetry run python3 script/generate_openapi.py
