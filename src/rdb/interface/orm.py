@@ -20,9 +20,13 @@ class OrmBase(Generic[TEntity], ABC, Base, metaclass=DeclarativeABCMeta):
 
     @classmethod
     @abstractmethod
-    def from_entity(cls, entity: TEntity) -> "OrmBase[TEntity]":
+    def new_from_entity(cls, entity: TEntity) -> "OrmBase[TEntity]":
         pass
 
     @abstractmethod
     def to_entity(self) -> TEntity:
+        pass
+
+    @abstractmethod
+    def update_with_entity(self, entity: TEntity) -> "OrmBase[TEntity]":
         pass

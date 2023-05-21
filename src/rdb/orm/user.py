@@ -19,7 +19,7 @@ class User(OrmBase[UserEntity]):
     phone_number = Column("phone_number", String(20), nullable=True, unique=True)
 
     @classmethod
-    def from_entity(cls, entity: UserEntity) -> "User":
+    def new_from_entity(cls, entity: UserEntity) -> "User":
         return cls(
             id=entity.id.id,
             name=entity.name.name,
@@ -31,3 +31,9 @@ class User(OrmBase[UserEntity]):
         if self.age is None:
             raise InvalidFromOrmError([ErrorInfo(ErrorMessage.E_INVALID_FROM_ORM)])
         return UserEntity.build(str(self.id), str(self.name), int(self.age), str(self.phone_number))
+
+    def update_with_entity(self, entity: UserEntity) -> "User":
+        self.name = entity.name.name
+        self.age = entity.age.age
+        self.phone_number = entity.phone_number.phone_number
+        return self

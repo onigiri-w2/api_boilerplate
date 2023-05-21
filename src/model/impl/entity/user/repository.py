@@ -11,15 +11,18 @@ from src.utils.exception.exception import NotFoundError
 
 class UserMySQLRepository(MySQLRepository[User, Char16Id]):
     def create(self, entity: User) -> User:
-        orm = UserORM.from_entity(entity)
-        self._save(orm)
+        orm = UserORM.new_from_entity(entity)
+        self._session.add(orm)
+        if self._autocommit:
+            self._session.commit()
         return entity
 
     def update(self, entity: User) -> User:
         # 対象のMemberが存在するか確認する
-        self._find_orm(entity.id.id)
-        orm = UserORM.from_entity(entity)
-        self._save(orm)
+        orm = self._find_orm(entity.id.id)
+        orm.update_with_entity(entity)
+        if self._autocommit:
+            self._session.commit()
         return entity
 
     def find(self, id: Char16Id) -> User:
