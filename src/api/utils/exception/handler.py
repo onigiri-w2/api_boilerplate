@@ -17,6 +17,8 @@ def add_exception_handlers(app: FastAPI) -> None:
     app.add_exception_handler(404, handle_not_found_path)
 ```
 """
+from typing import Any
+
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -49,3 +51,16 @@ def handle_custom_exception(request: Request, exc: HttpException) -> JSONRespons
 def add_exception_handlers(app: FastAPI) -> None:
     app.add_exception_handler(HttpException, handle_custom_exception)
     app.add_exception_handler(RequestValidationError, handle_invalid_request)
+
+    @app.exception_handler(404)
+    def custom_404_handler(_: Any, __: Any) -> JSONResponse:
+        return JSONResponse(
+            status_code=404,
+            content=ErrorResponse(
+                detail=[
+                    ErrorCodeMsg(
+                        code=HttpErrorMessage.E_H_NOT_FOUND_PATH.name, msg=HttpErrorMessage.E_H_NOT_FOUND_PATH.value
+                    )
+                ]
+            ).dict(),
+        )
