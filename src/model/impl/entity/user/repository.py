@@ -1,6 +1,8 @@
 """
 このファイルは、Repositoryのサンプルです。
 """
+from sqlalchemy.exc import IntegrityError
+
 from src.model.impl.entity.user.user import User
 from src.model.impl.repository.mysql_repository import MySQLRepository
 from src.model.impl.valueobject.id.char_16_id import Char16Id
@@ -10,19 +12,36 @@ from src.utils.exception.exception import NotFoundError
 
 
 class UserMySQLRepository(MySQLRepository[User, Char16Id]):
+    # TODO: エラー処理周りのコードを綺麗にしたい。
     def create(self, entity: User) -> User:
-        orm = UserORM.new_from_entity(entity)
-        self._session.add(orm)
-        if self._autocommit:
-            self._session.commit()
+        try:
+            orm = UserORM.new_from_entity(entity)
+            self._session.add(orm)
+            if self._autocommit:
+                self._session.commit()
+        except IntegrityError as e:
+            # TODO: カスタムエラーに変換する
+            self._session.rollback()
+            raise e
+        except Exception as e:
+            self._session.rollback()
+            raise e
         return entity
 
     def update(self, entity: User) -> User:
-        # 対象のMemberが存在するか確認する
-        orm = self._find_orm(entity.id.id)
-        orm.update_with_entity(entity)
-        if self._autocommit:
-            self._session.commit()
+        try:
+            # 対象のMemberが存在するか確認する
+            orm = self._find_orm(entity.id.id)
+            orm.update_with_entity(entity)
+            if self._autocommit:
+                self._session.commit()
+        except IntegrityError as e:
+            # TODO: カスタムエラーに変換する
+            self._session.rollback()
+            raise e
+        except Exception as e:
+            self._session.rollback()
+            raise e
         return entity
 
     def find(self, id: Char16Id) -> User:
