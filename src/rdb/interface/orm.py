@@ -7,7 +7,7 @@ from sqlalchemy.ext.declarative import DeclarativeMeta
 from src.model.interface.entity import Entity
 from src.settings import Base
 
-T = TypeVar("T", bound=Entity)
+TEntity = TypeVar("TEntity", bound=Entity)
 
 
 class DeclarativeABCMeta(ABCMeta, DeclarativeMeta):
@@ -15,14 +15,14 @@ class DeclarativeABCMeta(ABCMeta, DeclarativeMeta):
 
 
 # type: ignore
-class OrmBase(Generic[T], ABC, Base, metaclass=DeclarativeABCMeta):
+class OrmBase(Generic[TEntity], ABC, Base, metaclass=DeclarativeABCMeta):
     __abstract__ = True
 
     @classmethod
     @abstractmethod
-    def from_entity(cls, entity: T) -> "OrmBase[T]":
+    def from_entity(cls, entity: TEntity) -> "OrmBase[TEntity]":
         pass
 
     @abstractmethod
-    def to_entity(self) -> T:
+    def to_entity(self) -> TEntity:
         pass

@@ -2,7 +2,7 @@ from typing import Dict, List, Tuple, TypeVar
 
 from src.utils.validation.evaluator import Evaluator
 
-T = TypeVar("T")
+TErrorObject = TypeVar("TErrorObject")
 
 
 class Validator:
@@ -34,16 +34,16 @@ class Validator:
         # ['名前は20文字以内にしてください', '年齢は0以上にしてください', '名前の長さは年齢より短くしてください']
     """
 
-    def __init__(self, schema: List[Tuple[Evaluator, T]]):
+    def __init__(self, schema: List[Tuple[Evaluator, TErrorObject]]):
         """バリデーターを初期化する
 
         Args:
             schema (List[Tuple[Evaluator, T]]): 評価条件とその条件に反した場合に出力されるオブジェクトの一覧
         """
         self._evaluator_errmsg_map = {evaluator: errmsg for evaluator, errmsg in schema}
-        self._errors: List[T] = []
+        self._errors: List[TErrorObject] = []
 
-    def validate(self, key_value_map: Dict[str, T]) -> bool:
+    def validate(self, key_value_map: Dict[str, TErrorObject]) -> bool:
         """与えられた値一覧が評価条件を全て満たすかどうかを返す
 
         Args:
@@ -58,5 +58,5 @@ class Validator:
         return len(self._errors) == 0
 
     @property
-    def errors(self) -> List[T]:
+    def errors(self) -> List[TErrorObject]:
         return self._errors
