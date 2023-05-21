@@ -24,7 +24,7 @@ class ValueObject(metaclass=ABCMeta):
         return asdict(self)
 
     def __post_init__(self) -> None:
-        validator = Validator(self.VALID_SCHEMA)
+        validator = Validator[ErrorInfo](self.VALID_SCHEMA)
         keys = asdict(self).keys()
         validator.validate({k: self.__dict__[k] for k in keys})
         if validator.errors:

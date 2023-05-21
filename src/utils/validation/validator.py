@@ -1,11 +1,11 @@
-from typing import Dict, List, Tuple, TypeVar
+from typing import Dict, Generic, List, Tuple, TypeVar
 
 from src.utils.validation.evaluator import Evaluator
 
 TErrorObject = TypeVar("TErrorObject")
 
 
-class Validator:
+class Validator(Generic[TErrorObject]):
     """バリデーター
 
     事前に属性セットごとの評価条件（`Evaluator`）を登録しておき、その評価条件を満たせない場合はFalseが返ってくる仕様。
